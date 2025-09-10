@@ -1,0 +1,61 @@
+<!doctype html>
+<html lang="ja">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>将棋 - Rich UI</title>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <header class="app-header">
+      <h1>将棋</h1>
+      <div class="controls">
+        <button id="newGameBtn">新局</button>
+        <button id="undoBtn">戻す</button>
+        <button id="redoBtn">進める</button>
+        <label class="chk">
+          <input type="checkbox" id="playCpuChk" />
+          先後のうち後手をCPU
+        </label>
+        <button id="flipBtn">盤面反転</button>
+      </div>
+    </header>
+
+    <main class="app-main">
+      <section class="side-panel top">
+        <div class="player-label" id="goteLabel">後手（△）</div>
+        <div class="komadai" id="komadaiW" aria-label="後手の持ち駒"></div>
+      </section>
+
+      <section class="board-wrap">
+        <svg id="board" viewBox="0 0 950 950" role="img" aria-label="将棋盤"></svg>
+        <div class="turn-indicator">
+          手番: <span id="turnText">先手（▲）</span>
+        </div>
+      </section>
+
+      <section class="side-panel bottom">
+        <div class="player-label" id="senteLabel">先手（▲）</div>
+        <div class="komadai" id="komadaiB" aria-label="先手の持ち駒"></div>
+      </section>
+
+      <aside class="moves-panel">
+        <h2>棋譜</h2>
+        <ol id="movesList" class="moves"></ol>
+      </aside>
+    </main>
+
+    <footer class="app-footer">
+      <span id="statusText">ようこそ！ドラッグ＆ドロップ、またはクリックで操作できます。</span>
+    </footer>
+
+    <template id="pieceTemplate">
+      <g class="piece" tabindex="0">
+        <polygon class="piece-body" points="0,0 80,0 90,25 40,100 -10,25" />
+        <text class="piece-text" x="40" y="62" text-anchor="middle" dominant-baseline="middle"></text>
+      </g>
+    </template>
+
+    <script src="app.js"></script>
+  </body>
+  </html>

@@ -1,0 +1,207 @@
+<!doctype html>
+<html lang="ja">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+    <title>キッズぽけっと｜お小遣い管理</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <div id="app" class="app">
+      <header class="app-header">
+        <div class="profile">
+          <button id="avatarButton" class="avatar" aria-label="アバター変更">🐻</button>
+          <div class="name-wrap">
+            <input id="childName" class="child-name" placeholder="なまえをいれてね" maxlength="12" />
+            <div class="greeting">ようこそ！</div>
+          </div>
+        </div>
+        <div class="balance-card">
+          <div class="balance-label">いまのざんだか</div>
+          <div id="balance" class="balance">¥0</div>
+          <div class="piggy-wrap">
+          <div class="piggy" id="piggy" aria-hidden="true">
+            <span class="top" aria-hidden="true"></span>
+            <span class="body" aria-hidden="true"></span>
+            <span class="head" aria-hidden="true"></span>
+            <span class="snout" aria-hidden="true"></span>
+            <span class="ear e1" aria-hidden="true"></span>
+            <span class="ear e2" aria-hidden="true"></span>
+            <span class="leg l1" aria-hidden="true"></span>
+            <span class="leg l2" aria-hidden="true"></span>
+            <span class="leg l3" aria-hidden="true"></span>
+            <span class="leg l4" aria-hidden="true"></span>
+          </div>
+          </div>
+        </div>
+      </header>
+
+      <nav class="tabs" role="tablist">
+        <button class="tab active" data-tab="home" role="tab" aria-selected="true">ホーム</button>
+        <button class="tab" data-tab="transactions" role="tab">おこづかい</button>
+        <button class="tab" data-tab="goals" role="tab">もくひょう</button>
+        <button class="tab" data-tab="chores" role="tab">おてつだい</button>
+        <button class="tab" data-tab="settings" role="tab">せってい</button>
+      </nav>
+
+      <main class="views">
+        <!-- Home -->
+        <section id="view-home" class="view active" aria-labelledby="tab-home">
+          <div class="cards-grid">
+            <div class="card">
+              <div class="card-title">さいきんのうごき</div>
+              <ul id="recentList" class="list recent-list" aria-live="polite"></ul>
+            </div>
+            <div class="card">
+              <div class="card-title">クイック追加</div>
+              <div class="quick-actions">
+                <button id="quickAdd100" class="btn btn-good">+100円</button>
+                <button id="quickAdd300" class="btn btn-good">+300円</button>
+                <button id="quickSnack" class="btn btn-bad">-150円 おやつ</button>
+              </div>
+              <form id="quickForm" class="form-inline" autocomplete="off">
+                <select id="quickType" class="input type">
+                  <option value="income">ふやす</option>
+                  <option value="expense">へらす</option>
+                </select>
+                <input id="quickAmount" class="input amount" inputmode="numeric" pattern="[0-9]*" placeholder="金額" />
+                <input id="quickNote" class="input note" placeholder="メモ (にっき)" />
+                <button class="btn primary" type="submit">追加</button>
+              </form>
+            </div>
+          </div>
+        </section>
+
+        <!-- Transactions -->
+        <section id="view-transactions" class="view" aria-labelledby="tab-transactions">
+          <div class="toolbar">
+            <div class="filter">
+              <select id="filterType" class="input">
+                <option value="all">すべて</option>
+                <option value="income">ふやす</option>
+                <option value="expense">へらす</option>
+                <option value="goal">ちょきん</option>
+                <option value="chore">おてつだい</option>
+              </select>
+            </div>
+            <button id="addTransactionBtn" class="btn primary">新しく追加</button>
+          </div>
+          <ul id="txList" class="list tx-list"></ul>
+
+          <dialog id="txDialog" class="dialog">
+            <form method="dialog" id="txForm" class="form" autocomplete="off">
+              <h3>おこづかいを追加</h3>
+              <label class="field">
+                <span>しゅるい</span>
+                <select id="txType" required>
+                  <option value="income">ふやす</option>
+                  <option value="expense">へらす</option>
+                </select>
+              </label>
+              <label class="field">
+                <span>金額</span>
+                <input id="txAmount" inputmode="numeric" pattern="[0-9]*" placeholder="例: 200" required />
+              </label>
+              <label class="field">
+                <span>メモ</span>
+                <input id="txNote" placeholder="例: おやつ/お小遣い" />
+              </label>
+              <menu class="dialog-actions">
+                <button value="cancel" class="btn">やめる</button>
+                <button value="ok" class="btn primary" id="txSubmit">追加</button>
+              </menu>
+            </form>
+          </dialog>
+        </section>
+
+        <!-- Goals -->
+        <section id="view-goals" class="view" aria-labelledby="tab-goals">
+          <div class="toolbar">
+            <button id="addGoalBtn" class="btn primary">もくひょうを作る</button>
+          </div>
+          <div id="goalList" class="goals"></div>
+
+          <dialog id="goalDialog" class="dialog">
+            <form method="dialog" id="goalForm" class="form" autocomplete="off">
+              <h3>もくひょう</h3>
+              <label class="field">
+                <span>なまえ</span>
+                <input id="goalName" maxlength="20" placeholder="例: レゴ" required />
+              </label>
+              <label class="field">
+                <span>目標金額</span>
+                <input id="goalTarget" inputmode="numeric" pattern="[0-9]*" placeholder="例: 2000" required />
+              </label>
+              <menu class="dialog-actions">
+                <button value="cancel" class="btn">やめる</button>
+                <button value="ok" class="btn primary" id="goalSubmit">つくる</button>
+              </menu>
+            </form>
+          </dialog>
+        </section>
+
+        <!-- Chores -->
+        <section id="view-chores" class="view" aria-labelledby="tab-chores">
+          <div class="card">
+            <div class="card-title">きょうのおてつだい</div>
+            <ul id="choreList" class="list chore-list"></ul>
+          </div>
+        </section>
+
+        <!-- Settings -->
+        <section id="view-settings" class="view" aria-labelledby="tab-settings">
+          <div class="card">
+            <div class="card-title">プロフィール</div>
+            <div class="field-row">
+              <label>なまえ</label>
+              <input id="settingsName" maxlength="12" />
+            </div>
+            <div class="field-row">
+              <label>テーマ</label>
+              <select id="themeSelect">
+                <option value="cute">ピンク（かわいい）</option>
+                <option value="adventure">アドベンチャー（ブルー）</option>
+              </select>
+            </div>
+            <div class="field-row">
+              <label>アバター</label>
+              <div id="avatarChoices" class="avatar-choices"></div>
+            </div>
+            <div class="field-row">
+              <label>おかねの単位</label>
+              <select id="currency">
+                <option value="¥">円 (¥)</option>
+                <option value="$">ドル ($)</option>
+                <option value="€">ユーロ (€)</option>
+              </select>
+            </div>
+            <div class="field-row">
+              <button id="resetData" class="btn danger">データを全部けす</button>
+            </div>
+            <div class="card-title" style="margin-top:12px">バックアップ</div>
+            <div class="field-row" style="gap:8px; flex-wrap:wrap">
+              <button id="exportData" class="btn">エクスポート</button>
+              <button id="importData" class="btn">インポート</button>
+            </div>
+          </div>
+        </section>
+      </main>
+    </div>
+
+    <div id="confetti" class="confetti" aria-hidden="true"></div>
+
+    <!-- IO dialog (export/import) -->
+    <dialog id="ioDialog" class="dialog">
+      <form method="dialog" class="form" autocomplete="off">
+        <h3 id="ioTitle">データ</h3>
+        <textarea id="ioText" class="textarea" spellcheck="false"></textarea>
+        <menu class="dialog-actions">
+          <button value="cancel" class="btn">とじる</button>
+          <button value="ok" id="ioOk" class="btn primary">OK</button>
+        </menu>
+      </form>
+    </dialog>
+
+    <script src="app.js"></script>
+  </body>
+  </html>

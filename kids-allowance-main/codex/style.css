@@ -1,0 +1,124 @@
+:root {
+  --bg: #111417;
+  --panel: #181c20;
+  --accent: #f3b21c;
+  --accent-2: #e8840b;
+  --text: #e6e9ee;
+  --muted: #b9c0cc;
+  --line: #404650;
+  --square-light: #f1d9a7;
+  --square-dark: #ccad6b;
+  --hl: #7fd0ff66;
+  --move: #6ef7a766;
+  --danger: #ff6b6b66;
+}
+
+* { box-sizing: border-box; }
+html, body { height: 100%; }
+body {
+  margin: 0;
+  font-family: system-ui, -apple-system, Segoe UI, Helvetica, Arial, "Hiragino Kaku Gothic ProN", Meiryo, sans-serif;
+  background: radial-gradient(1200px 700px at 10% -10%, #1b2026, #0f1215 70%);
+  color: var(--text);
+}
+
+.app-header, .app-footer {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 12px 16px;
+  background: var(--panel);
+  border-bottom: 1px solid var(--line);
+}
+.app-footer { border-top: 1px solid var(--line); border-bottom: none; }
+.app-header h1 { font-size: 20px; margin: 0 8px 0 0; }
+.controls { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+button, .chk {
+  background: #22262b;
+  color: var(--text);
+  border: 1px solid var(--line);
+  padding: 6px 10px;
+  border-radius: 8px;
+  cursor: pointer;
+}
+button:hover { border-color: var(--accent); color: #fff; }
+
+.app-main {
+  display: grid;
+  grid-template-columns: 1fr 900px 320px;
+  gap: 16px;
+  padding: 16px;
+  align-items: start;
+}
+
+.board-wrap {
+  position: relative;
+  background: #d0b47733;
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  padding: 8px;
+}
+
+#board { width: 100%; height: auto; display: block; }
+.turn-indicator { position: absolute; right: 12px; bottom: 12px; font-size: 14px; color: var(--muted); }
+
+.side-panel { display: flex; flex-direction: column; gap: 8px; }
+.player-label { font-weight: 600; color: var(--muted); }
+.komadai {
+  min-height: 70px;
+  background: var(--panel);
+  border: 1px dashed var(--line);
+  border-radius: 8px;
+  padding: 8px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+.komadai .hand-piece {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: #23262c;
+  border: 1px solid var(--line);
+  border-radius: 6px;
+  padding: 4px 6px;
+  min-width: 36px;
+  gap: 4px;
+  cursor: pointer;
+}
+.komadai .hand-piece .count { color: var(--accent); font-weight: 700; }
+
+.moves-panel { background: var(--panel); border: 1px solid var(--line); border-radius: 12px; padding: 12px; }
+.moves { margin: 0; padding: 0 0 0 20px; max-height: 760px; overflow: auto; }
+.moves li { margin: 2px 0; color: var(--muted); }
+.moves li.current { color: #fff; }
+
+/* Board SVG styling */
+.grid-line { stroke: #6f4d1d; stroke-width: 2; }
+.coord { fill: #774f16; font-size: 18px; }
+.square-hl { fill: var(--hl); }
+.square-move { fill: var(--move); }
+.square-danger { fill: var(--danger); }
+
+.piece { cursor: grab; }
+.piece:active { cursor: grabbing; }
+.piece-body {
+  fill: url(#pieceGradient);
+  stroke: #4f3410;
+  stroke-width: 2;
+  filter: drop-shadow(0 2px 2px #0006);
+}
+.piece-text { font-size: 30px; font-weight: 800; fill: #2a1a03; }
+.piece.b .piece-text { fill: #000; }
+.piece.w .piece-text { fill: #111; }
+/* Rotation handled via SVG transform attribute in JS to avoid overriding translation */
+
+.promote-badge { fill: var(--accent-2); }
+
+@media (max-width: 1400px) {
+  .app-main { grid-template-columns: 1fr minmax(0, 1fr) 300px; }
+}
+@media (max-width: 1000px) {
+  .app-main { grid-template-columns: 1fr; }
+  .board-wrap { order: -1; }
+}
